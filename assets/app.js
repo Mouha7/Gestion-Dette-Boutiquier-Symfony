@@ -15,14 +15,4 @@ import './styles/app.css';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 
-// Client configuration
-const menuBurger = document.querySelector("#menu-burger");
-const inputTitle = document.querySelector("#input-title a");
-const sideMenu = document.querySelector("#side-menu");
-
-
-menuBurger.addEventListener("click", () => {
-    sideMenu.classList.toggle("hidden");
-    inputTitle.classList.toggle("hidden");
-});
 
