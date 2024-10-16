@@ -36,7 +36,7 @@ class ClientController extends AbstractController
             );
             $totalClients = $clientRepository->countSearchResults($searchDTO->getSearchTerm());
         } else {
-            $clients = $clientRepository->findBy([], ['createAt' => 'DESC'], $limit, ($page - 1) * $limit);
+            $clients = $clientRepository->findBy([], ['createAt' => 'ASC'], $limit, ($page - 1) * $limit);
             $totalClients = $clientRepository->count([]);
         }
 
@@ -50,6 +50,14 @@ class ClientController extends AbstractController
         if ($clientForm->isSubmitted() && $clientForm->isValid()) {
             $newClient->setCreateAt(new \DateTimeImmutable());
             $newClient->setUpdateAt(new \DateTimeImmutable());
+            $newClient->setStatus(true);
+            $user = $newClient->getUtilisateur();
+            if ($user) {
+                $user->setUpdateAt(new \DateTimeImmutable());
+                $user->setCreateAt(new \DateTimeImmutable());
+                $user->setStatus(true);
+                $entityManager->persist($user);
+            }
             $entityManager->persist($newClient);
             $entityManager->flush();
 

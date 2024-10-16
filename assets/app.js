@@ -6,6 +6,7 @@ import './bootstrap.js';
  * which should already be in your base.html.twig.
  */
 import './styles/app.css';
+import './controllers/error_alert.js';
 
 // Wrong (if bundle not installed)
 // import '@symfony/stimulus-bundle';

@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5444,
+            "driver": "PostgreSQL",
+            "name": "PostgresSQL 16",
+            "database": "gestion_dette_symfony_v1",
+            "username": "postgres",
+            "password": "root"
+        }
+    ]
+}

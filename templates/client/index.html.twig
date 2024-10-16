@@ -3,7 +3,7 @@ endblock %} {% block body %}
 <div class="flex h-screen">
 	<!-- Side Menu -->
 	<aside
-		class="w-64 bg-first py-3 text-gray-100 flex flex-col"
+		class="w-64 bg-first py-3 text-gray-100 flex flex-col hidden"
 		id="side-menu"
 	>
 		<div class="p-6 text-xl font-semibold cursor-pointer">
@@ -170,20 +170,30 @@ endblock %} {% block body %}
 					</button>
 				</div>
 				<div class="flex-1" id="input-title">
-					<a class="btn btn-ghost text-xl hidden">GESTION BOUTIQUE</a>
+					<a class="btn btn-ghost text-xl">GESTION BOUTIQUE</a>
 				</div>
 				<div class="flex-none gap-2">
-					<div class="form-control flex gap-2.5">
+					<div class="form-control">
 						{# Formulaire de recherche #}
-						{{ form_start(searchForm) }}
-						{{ form_row(searchForm.searchTerm) }}
-						<button type="submit" class="btn btn-active bg-first border-first text-gray-100 ">Rechercher</button>
+						{{
+							form_start(searchForm, {
+								attr: { class: "flex gap-2.5 items-center" }
+							})
+						}}
+						{{
+							form_widget(searchForm.searchTerm, {
+								attr: {
+									class: "input input-bordered bg-gray-100 w-24 md:w-auto"
+								}
+							})
+						}}
+						<button
+							type="submit"
+							class="btn btn-active bg-first border-first text-gray-100"
+						>
+							Rechercher
+						</button>
 						{{ form_end(searchForm) }}
-						<!-- <input
-							type="text"
-							placeholder="Search"
-							class="input input-bordered bg-gray-100 w-24 md:w-auto"
-						/> -->
 					</div>
 					<div class="dropdown dropdown-end">
 						<div
@@ -219,8 +229,153 @@ endblock %} {% block body %}
 			<!-- Client List and New Client in Short Supply Section -->
 			<div class="grid grid-cols-2 gap-4 mb-6 flex-auto">
 				<!-- New Client Form -->
-				{{ form(clientForm) }}
-
+				<div
+					class="bg-gray-100 text-gray-500 rounded-lg h-[450px] flex flex-col gap-2.5 shadow-md p-4 overflow-auto"
+				>
+					<h3 class="font-semibold text-lg mb-4 text-first">
+						Nouveau Client
+					</h3>
+					{{
+						form_start(clientForm, {
+							attr: { class: "space-y-4 flex w-auto flex-col" }
+						})
+					}}
+					{{
+						form_widget(clientForm.surname, {
+							attr: {
+								class: "input input-bordered flex items-center gap-2 bg-gray-100 shadow-inner shadow-gray-300"
+							}
+						})
+					}}
+					{% set errors = form_errors(clientForm.surname) %} {% if
+						errors|length > 0 %}
+						<div
+						id="error-alert"
+						data-errors="{{ errors|json_encode|e('html_attr') }}"
+					></div>
+					{% endif %}
+					{{
+						form_widget(clientForm.tel, {
+							attr: {
+								class: "input input-bordered flex items-center gap-2 bg-gray-100 shadow-inner shadow-gray-300"
+							}
+						})
+					}}
+					{% set errors = form_errors(clientForm.tel) %} {% if
+						errors|length > 0 %}
+						<div
+						id="error-alert"
+						data-errors="{{ errors|json_encode|e('html_attr') }}"
+					></div>
+					{% endif %}
+					{{
+						form_widget(clientForm.address, {
+							attr: {
+								class: "input input-bordered flex items-center gap-2 bg-gray-100 shadow-inner shadow-gray-300"
+							}
+						})
+					}}
+					{% set errors = form_errors(clientForm.tel) %} {% if
+						errors|length > 0 %}
+						<div
+						id="error-alert"
+						data-errors="{{ errors|json_encode|e('html_attr') }}"
+					></div>
+					{% endif %}
+					{{
+						form_widget(clientForm.cumulMontantDu, {
+							attr: {
+								class: "input input-bordered flex items-center gap-2 bg-gray-100 shadow-inner shadow-gray-300"
+							}
+						})
+					}}
+					{% set errors = form_errors(clientForm.cumulMontantDu) %} {% if
+						errors|length > 0 %}
+						<div
+						id="error-alert"
+						data-errors="{{ errors|json_encode|e('html_attr') }}"
+					></div>
+					{% endif %}
+					<details
+						class="collapse rounded-lg bg-gray-100 shadow-inner shadow-gray-100"
+					>
+						<summary
+							class="collapse-title text-first font-medium min-h-12 bg-gray-100 shadow-inner shadow-gray-300"
+						>
+							Créer un client
+						</summary>
+						<div class="collapse-content flex flex-col gap-2.5">
+							<label
+								class="input input-bordered flex items-center gap-2 bg-gray-100 shadow-inner shadow-gray-300"
+							>
+								Email
+								{{
+									form_widget(clientForm.utilisateur.email, {
+										attr: {
+											class: "grow"
+										}
+									})
+								}}
+							</label>
+							{% set errors = form_errors(clientForm.utilisateur.email) %} {% if
+								errors|length > 0 %}
+								<div
+								id="error-alert"
+								data-errors="{{ errors|json_encode|e('html_attr') }}"
+							></div>
+							{% endif %}
+							<label
+								class="input input-bordered flex items-center gap-2 bg-gray-100 shadow-inner shadow-gray-300"
+							>
+								Login
+								{{
+									form_widget(clientForm.utilisateur.login, {
+										attr: {
+											class: "grow"
+										}
+									})
+								}}
+							</label>
+							{% set errors = form_errors(clientForm.utilisateur.email) %} {% if
+								errors|length > 0 %}
+								<div
+								id="error-alert"
+								data-errors="{{ errors|json_encode|e('html_attr') }}"
+							></div>
+							{% endif %}
+							<label
+								class="input input-bordered flex items-center gap-2 bg-gray-100 shadow-inner shadow-gray-300"
+							>
+								Password
+								{{
+									form_widget(
+										clientForm.utilisateur.password,
+										{
+											attr: {
+												class: "grow"
+											}
+										}
+									)
+								}}
+							</label>
+							{% set errors = form_errors(clientForm.utilisateur.email) %} {% if
+								errors|length > 0 %}
+								<div
+								id="error-alert"
+								data-errors="{{ errors|json_encode|e('html_attr') }}"
+							></div>
+							{% endif %}
+						</div>
+					</details>
+					{{
+						form_widget(clientForm.Enregistrer, {
+							attr: {
+								class: "btn btn-active bg-first border-first text-gray-100"
+							}
+						})
+					}}
+					{{ form_end(clientForm) }}
+				</div>
 				<!-- Client List -->
 				<div
 					class="bg-gray-100 rounded-lg h-[450px] flex flex-col gap-2.5 shadow-md p-4 overflow-auto"
@@ -241,6 +396,7 @@ endblock %} {% block body %}
 									<th class="py-2 px-4">Adresse</th>
 									<th class="py-2 px-4">Montant Dette</th>
 									<th class="py-2 px-4">Utilisateur</th>
+									<th class="py-2 px-4">Date</th>
 									<th class="py-2 px-4">Status</th>
 								</tr>
 							</thead>
@@ -267,6 +423,10 @@ endblock %} {% block body %}
 									{% else %}
 									<td class="py-2 px-4">N/A</td>
 									{% endif %}
+
+									<td class="py-2 px-4">
+										{{ item.createAt | date('F j, Y') }}
+									</td>
 
 									<td class="py-2 px-4">
 										{% if item.isStatus == 1 %} Actif {%
