@@ -14,6 +14,6 @@ import './controllers/error_alert.js';
 // Correct (if bundle is installed)
 // import '@stimulus/stimulus'; // Assuming you're using standalone Stimulus
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+// console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 
 

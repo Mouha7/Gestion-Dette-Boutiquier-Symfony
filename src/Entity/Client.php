@@ -6,8 +6,11 @@ use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[UniqueEntity('surname', message: 'Le surname doit être unique.' )]
+#[UniqueEntity('tel', message: 'Le téléphone doit être unique.' )]
 class Client
 {
     #[ORM\Id]
@@ -18,7 +21,7 @@ class Client
     #[ORM\Column(length: 32, unique: true)]
     private ?string $surname = null;
 
-    #[ORM\Column(length: 32)]
+    #[ORM\Column(length: 32, unique: true)]
     private ?string $tel = null;
 
     #[ORM\Column(length: 100)]
@@ -42,12 +45,15 @@ class Client
     /**
      * @var Collection<int, Dette>
      */
-    #[ORM\OneToMany(targetEntity: Dette::class, mappedBy: 'client', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Dette::class, cascade: ['persist'], mappedBy: 'client', orphanRemoval: true)]
     private Collection $dettes;
 
     public function __construct()
     {
         $this->dettes = new ArrayCollection();
+        $this->status = true;
+        $this->createAt = new \DateTimeImmutable();
+        $this->updateAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

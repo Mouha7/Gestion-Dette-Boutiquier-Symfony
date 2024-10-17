@@ -25,7 +25,6 @@ class ClientRepository extends ServiceEntityRepository
             ->orderBy('c.createAt', 'DESC')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit);
-
         return $qb->getQuery()->getResult();
     }
 

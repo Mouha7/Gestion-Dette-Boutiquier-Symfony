@@ -32,6 +32,13 @@ class Dette
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
 
+    public function __construct()
+    {
+        $this->createAt = new \DateTimeImmutable();
+        $this->updateAt = new \DateTimeImmutable();
+        $this->status = false;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

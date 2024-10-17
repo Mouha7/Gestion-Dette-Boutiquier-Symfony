@@ -2,16 +2,17 @@
 
 namespace App\Form;
 
-use App\Entity\User;
 use App\Entity\Client;
 use Symfony\Component\Form\AbstractType;
+use App\EventSubscriber\ClientFormSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ClientType extends AbstractType
 {
@@ -19,18 +20,12 @@ class ClientType extends AbstractType
     {
         $builder
             ->add('surname', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'Surname',
-                ],
+                'attr' => ['placeholder' => 'Surname'],
                 'label' => false,
                 'required' => false,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez entrer un nom valide',
-                    ]),
-                    new NotNull([
-                        'message' => 'Le nom ne doit pas être vide.',
-                    ]),
+                    new NotBlank(['message' => 'Veuillez entrer un nom valide']),
+                    new NotNull(['message' => 'Le nom ne doit pas être vide.']),
                     new Regex([
                         'pattern' => "/^[\p{L}\p{M}'-]{2,50}$/u",
                         'message' => 'Veuillez entrer un nom valide (2 à 50 caractères, lettres uniquement).',
@@ -38,35 +33,25 @@ class ClientType extends AbstractType
                 ]
             ])
             ->add('tel', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'Tel',
-                ],
+                'attr' => ['placeholder' => 'Tel'],
+                'label' => false,
+                'required' => false,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a valid label',
-                    ]),
+                    new NotBlank(['message' => 'Please enter a valid label']),
                     new Regex([
                         'pattern' => "/^\+221\s?\d{3}[-\s]?\d{3}[-\s]?\d{3}$/",
                         'message' => 'Please enter a valid phone number',
                     ]),
-                    new NotNull([
-                        'message' => 'Le numéro de téléphone ne doit pas être vide.',
-                    ])
+                    new NotNull(['message' => 'Le numéro de téléphone ne doit pas être vide.']),
                 ],
-                'label' => false,
-                'required' => false,
             ])
             ->add('address', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'Adresse',
-                ],
+                'attr' => ['placeholder' => 'Adresse'],
                 'label' => false,
                 'required' => false,
             ])
             ->add('cumulMontantDu', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'Montant',
-                ],
+                'attr' => ['placeholder' => 'Montant'],
                 'label' => false,
                 'required' => false,
                 'constraints' => [
@@ -76,12 +61,15 @@ class ClientType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('utilisateur', UserType::class, [
+            ->add('createUser', CheckboxType::class, [
+                'mapped' => false,
                 'required' => false,
                 'label' => false,
             ])
-            ->add('Enregistrer', SubmitType::class)
-        ;
+            ->add('Enregistrer', SubmitType::class);
+
+        // Ajouter le Subscriber
+        $builder->addEventSubscriber(new ClientFormSubscriber());
     }
 
     public function configureOptions(OptionsResolver $resolver): void
